@@ -1,0 +1,37 @@
+<project basedir="." name="LEE-BUILD" default="main">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+
+    <property name="bkp.dir" value="bkp"/>
+
+    <target name="main" depends="run"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/GameOn.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main" value="src/Poker"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/GameOn.jar" fork="true"/>
+    </target>
+
+    <target name="copy" depends="jar">
+        <mkdir dir="${bkp.dir}"/>
+        <copy file="${jar.dir}/GameOn.jar" todir="${bkp.dir}"/>
+    </target>
+</project>
